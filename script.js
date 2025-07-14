@@ -144,7 +144,7 @@ function colorScoreByPar(input, holeIndex) {
   }
 }
 
-// SCORE PAGE - Skapa score-ruta för varje spelare och hål
+// SCORE PAGE - Skapa score-ruta för varje spelare och hål (nu med mobil-kompatibilitet)
 function renderScoreForm() {
   const players = JSON.parse(localStorage.getItem("currentPlayers")) || [];
   const scoreTable = document.getElementById("score-table");
@@ -160,11 +160,12 @@ function renderScoreForm() {
   
   // Visa online/offline status
   if (!onlineStatus) {
-    html += '<div style="color: orange; margin-bottom: 1rem;">⚠️ Offline läge - data sparas lokalt</div>';
+    html += '<div class="status-message status-offline">⚠️ Offline läge - data sparas lokalt</div>';
   } else {
-    html += '<div style="color: green; margin-bottom: 1rem;">🌐 Online - data sparas till SheetDB</div>';
+    html += '<div class="status-message status-online">🌐 Online - data sparas till SheetDB</div>';
   }
   
+  // Desktop tabell (dold på mobil)
   html += "<table><thead><tr><th>Spelare</th>";
 
   for (let i = 1; i <= holeCount; i++) {
@@ -181,16 +182,68 @@ function renderScoreForm() {
   });
 
   html += "</tbody></table>";
+  
+  // Mobil layout (dold på desktop)
+  html += '<div class="mobile-score-layout">';
+  
+  players.forEach(player => {
+    html += `
+      <div class="mobile-player-card">
+        <div class="mobile-player-header">
+          <span>${player}</span>
+          <div class="mobile-total-score" id="mobile-total-${player}">0</div>
+        </div>
+        <div class="mobile-holes-grid">`;
+    
+    for (let i = 0; i < holeCount; i++) {
+      html += `
+        <div class="mobile-hole-input">
+          <div class="mobile-hole-label">Hål ${i + 1}</div>
+          <div class="mobile-hole-par">Par ${holePars[i]}</div>
+          <input type="number" name="${player}-hole${i}-mobile" min="1" required />
+        </div>`;
+    }
+    
+    html += `
+        </div>
+      </div>`;
+  });
+  
+  html += '</div>';
+  
   scoreTable.innerHTML = html;
 
-  const inputs = scoreTable.querySelectorAll('input[type="number"]');
-  inputs.forEach(input => {
-    const nameparts = input.name.split('-hole');
-    const holeIndex = parseInt(nameparts[1]);
-    const playerName = nameparts[0];
+  // Lägg till event listeners för både desktop och mobil inputs
+  const allInputs = scoreTable.querySelectorAll('input[type="number"]');
+  allInputs.forEach(input => {
+    let nameparts, holeIndex, playerName;
+    
+    if (input.name.includes('-mobile')) {
+      // Mobil input
+      nameparts = input.name.replace('-mobile', '').split('-hole');
+      holeIndex = parseInt(nameparts[1]);
+      playerName = nameparts[0];
+    } else {
+      // Desktop input
+      nameparts = input.name.split('-hole');
+      holeIndex = parseInt(nameparts[1]);
+      playerName = nameparts[0];
+    }
     
     input.addEventListener('input', function() {
       colorScoreByPar(this, holeIndex);
+      
+      // Synka värden mellan desktop och mobil inputs
+      const isMobile = this.name.includes('-mobile');
+      const otherInput = isMobile 
+        ? scoreTable.querySelector(`[name='${playerName}-hole${holeIndex}']`)
+        : scoreTable.querySelector(`[name='${playerName}-hole${holeIndex}-mobile']`);
+      
+      if (otherInput) {
+        otherInput.value = this.value;
+        colorScoreByPar(otherInput, holeIndex);
+      }
+      
       updateTotalScore(playerName);
     });
   });
@@ -204,25 +257,40 @@ function updateTotalScore(player) {
     total += score;
   }
   
+  // Uppdatera både desktop och mobil totaler
   const totalElement = document.getElementById(`total-${player}`);
-  totalElement.textContent = total || 0;
+  const mobileTotalElement = document.getElementById(`mobile-total-${player}`);
+  
+  if (totalElement) {
+    totalElement.textContent = total || 0;
+  }
+  if (mobileTotalElement) {
+    mobileTotalElement.textContent = total || 0;
+  }
   
   const totalPar = holePars.reduce((sum, par) => sum + par, 0);
   if (total > 0) {
+    let color, fontWeight = 'bold';
     if (total < totalPar) {
-      totalElement.style.color = '#28a745';
-      totalElement.style.fontWeight = 'bold';
+      color = '#28a745';
     } else if (total === totalPar) {
-      totalElement.style.color = '#007bff';
-      totalElement.style.fontWeight = 'bold';
+      color = '#007bff';
     } else {
-      totalElement.style.color = '#dc3545';
-      totalElement.style.fontWeight = 'bold';
+      color = '#dc3545';
+    }
+    
+    if (totalElement) {
+      totalElement.style.color = color;
+      totalElement.style.fontWeight = fontWeight;
+    }
+    if (mobileTotalElement) {
+      mobileTotalElement.style.color = color;
+      mobileTotalElement.style.fontWeight = fontWeight;
     }
   }
 }
 
-// SCORE PAGE - Spara rundan till SheetDB
+// SCORE PAGE - Spara rundan till SheetDB (uppdaterad för att hantera både desktop och mobil)
 const scoreForm = document.getElementById("score-form");
 if (scoreForm) {
   renderScoreForm();
@@ -364,7 +432,7 @@ async function renderLeaderboard() {
       }
     });
     
-    leaderboardDiv.innerHTML = '<div style="color: green; margin-bottom: 1rem;">🌐 Data från SheetDB</div>';
+    leaderboardDiv.innerHTML = '<div class="status-message status-online">🌐 Data från SheetDB</div>';
   } else {
     // Fallback till localStorage
     const rounds = JSON.parse(localStorage.getItem("rounds") || "[]");
@@ -388,7 +456,7 @@ async function renderLeaderboard() {
     });
     
     if (Object.keys(scoreboard).length > 0) {
-      leaderboardDiv.innerHTML = '<div style="color: orange; margin-bottom: 1rem;">⚠️ Offline data (lokal lagring)</div>';
+      leaderboardDiv.innerHTML = '<div class="status-message status-offline">⚠️ Offline data (lokal lagring)</div>';
     }
   }
 
