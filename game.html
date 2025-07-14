@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start New Game</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Starta Ny Runda⛳</h1>
+    <p>Skriv in spelarna</p>
+
+    <div id="player-list">
+      <!-- Dynamiskt lista på spelare -->
+    </div>
+
+    <div style="margin-top: 1rem;">
+      <input type="text" id="new-player" placeholder="Add new player" />
+      <button onclick="addPlayer()">Add</button>
+    </div>
+
+    <div class="course-info">
+      <h3>Course Information</h3>
+      
+        <li> ⛳ 9 holes total</li>
+        <li> 🥏 Par: 3, 4, 3, 3, 3, 3, 4, 4, 4</li>
+        <li> 🌟 Total par: 31</li>
+      
+    </div>
+
+    <button class="start-btn" onclick="startGame()">▶ Start Game</button>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
