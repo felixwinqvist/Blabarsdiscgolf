@@ -425,3 +425,490 @@ table, .mobile-score-layout {
   color: #856404;
   border: 1px solid #ffeaa7;
 }
+
+/* Lägg till dessa regler till din befintliga style.css */
+
+/* KNAPP POSITIONERING */
+.start-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  background-color: #28a745;
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  /* Säkerställ att knappen alltid är under innehållet */
+  clear: both;
+}
+
+.start-btn:hover {
+  background-color: #218838;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
+}
+
+/* LEADERBOARD SPECIFIKA REGLER */
+#leaderboard {
+  margin-bottom: 1rem; /* Lägger till utrymme efter tabellen */
+}
+
+/* Se till att container har rätt layout för knappen */
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Flex-grow för att pusha knappen nedåt */
+#leaderboard {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+/* MOBILANPASSNING FÖR KNAPP */
+@media (max-width: 768px) {
+  .start-btn {
+    width: calc(100% - 2rem);
+    font-size: 1.2rem;
+    padding: 1.2rem;
+    margin-top: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+  }
+  
+  #leaderboard {
+    margin-bottom: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .start-btn {
+    width: calc(100% - 1rem);
+    margin-top: 1.5rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+
+.container {
+  position: relative;
+  padding-bottom: 100px; /* Ge utrymme för knappen */
+}
+
+.start-btn {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 0;
+}
+/* MOBILKOMPATIBEL SCOREBOARD CSS - Lägg till eller ersätt i din style.css */
+
+/* GRUNDLÄGGANDE LAYOUT */
+body {
+  font-family: sans-serif;
+  background: linear-gradient(to bottom right, #e8f4f8, #ffffff);
+  margin: 0;
+  padding: 0;
+  color: #222;
+}
+
+.container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 1rem;
+  text-align: center;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.container img {
+  position: absolute;
+  top: 1rem;
+  left: 1rem;
+  width: 160px;
+  height: auto;
+}
+
+h1 {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  font-size: 2rem;
+  color: #2c3e50;
+}
+
+h1 span {
+  color: #0077cc;
+}
+
+/* LEADERBOARD LAYOUT */
+#leaderboard {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  margin-bottom: 2rem;
+}
+
+/* DESKTOP TABELL STYLING */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
+}
+
+thead {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+}
+
+th {
+  padding: 1rem 0.5rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.8rem;
+  text-align: center;
+  border: none;
+}
+
+th:first-child {
+  text-align: left;
+  padding-left: 1.5rem;
+}
+
+tbody tr {
+  transition: all 0.3s ease;
+  border-bottom: 1px solid #e9ecef;
+}
+
+tbody tr:nth-child(even) {
+  background-color: #f8f9fa;
+}
+
+tbody tr:nth-child(odd) {
+  background-color: white;
+}
+
+tbody tr:hover {
+  background-color: #e9f7ef;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+td {
+  padding: 1rem 0.5rem;
+  text-align: center;
+  font-weight: 500;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+td:first-child {
+  text-align: left;
+  padding-left: 1.5rem;
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* MOBILANPASSAD LEADERBOARD */
+.mobile-leaderboard {
+  display: none;
+}
+
+.mobile-player-card {
+  background-color: white;
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.mobile-player-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.mobile-player-header {
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
+  padding: 1rem 1.5rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.mobile-player-rank {
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: bold;
+}
+
+.mobile-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+  padding: 0;
+}
+
+.mobile-stat-item {
+  padding: 1rem;
+  text-align: center;
+  border-right: 1px solid #e9ecef;
+  background-color: #f8f9fa;
+}
+
+.mobile-stat-item:last-child {
+  border-right: none;
+}
+
+.mobile-stat-item:nth-child(2) {
+  background-color: white;
+}
+
+.mobile-stat-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #6c757d;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-stat-value {
+  font-size: 1.2rem;
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+.mobile-stat-value.best-score {
+  color: #28a745;
+}
+
+.mobile-stat-value.avg-score {
+  color: #007bff;
+}
+
+.mobile-stat-value.rounds {
+  color: #6c757d;
+}
+
+/* STATUS MEDDELANDEN */
+.status-message {
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+  font-weight: 500;
+  font-size: 0.9rem;
+}
+
+.status-online {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+.status-offline {
+  background-color: #fff3cd;
+  color: #856404;
+  border: 1px solid #ffeaa7;
+}
+
+/* KNAPP STYLING */
+.start-btn {
+  display: inline-block;
+  margin-top: 2rem;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  font-size: 1.1rem;
+  padding: 1rem 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+  transition: all 0.3s ease;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+  text-align: center;
+  clear: both;
+}
+
+.start-btn:hover {
+  background: linear-gradient(135deg, #218838, #1abc9c);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+}
+
+/* MOBILANPASSNING */
+@media (max-width: 768px) {
+  .container {
+    padding: 0.5rem;
+  }
+  
+  .container img {
+    width: 120px;
+    top: 0.5rem;
+    left: 0.5rem;
+  }
+  
+  h1 {
+    font-size: 1.6rem;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  /* Göm desktop tabell */
+  table {
+    display: none;
+  }
+  
+  /* Visa mobil layout */
+  .mobile-leaderboard {
+    display: block;
+  }
+  
+  .mobile-player-header {
+    padding: 0.8rem 1rem;
+    font-size: 1rem;
+  }
+  
+  .mobile-player-rank {
+    font-size: 0.8rem;
+    padding: 0.2rem 0.6rem;
+  }
+  
+  .mobile-stats-grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  
+  .mobile-stat-item {
+    padding: 0.8rem;
+  }
+  
+  .mobile-stat-label {
+    font-size: 0.7rem;
+  }
+  
+  .mobile-stat-value {
+    font-size: 1.1rem;
+  }
+  
+  .start-btn {
+    width: calc(100% - 2rem);
+    font-size: 1.2rem;
+    padding: 1.2rem;
+    margin-top: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
+  }
+  
+  #leaderboard {
+    margin-bottom: 1.5rem;
+  }
+}
+
+/* EXTRA LITEN SKÄRM */
+@media (max-width: 480px) {
+  .container {
+    padding: 0.3rem;
+  }
+  
+  .container img {
+    width: 100px;
+  }
+  
+  h1 {
+    font-size: 1.4rem;
+    margin-top: 1.2rem;
+  }
+  
+  .mobile-player-header {
+    padding: 0.7rem 0.8rem;
+    font-size: 0.9rem;
+  }
+  
+  .mobile-stat-item {
+    padding: 0.7rem 0.3rem;
+  }
+  
+  .mobile-stat-label {
+    font-size: 0.65rem;
+  }
+  
+  .mobile-stat-value {
+    font-size: 1rem;
+  }
+  
+  .start-btn {
+    width: calc(100% - 1rem);
+    margin-top: 1.5rem;
+    padding: 1rem;
+    font-size: 1.1rem;
+  }
+}
+
+/* ANIMATIONER */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+table,
+.mobile-leaderboard {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.mobile-player-card {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+/* LOADING STATE */
+.loading {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  font-size: 1.1rem;
+  color: #6c757d;
+}
+
+.loading::after {
+  content: "...";
+  animation: dots 1.5s infinite;
+}
+
+@keyframes dots {
+  0%, 20% { content: ""; }
+  40% { content: "."; }
+  60% { content: ".."; }
+  80%, 100% { content: "..."; }
+}
