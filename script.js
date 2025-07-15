@@ -1,4 +1,3 @@
-// KONFIGURERA DENNA URL MED DIN SHEETDB API URL
 const SHEETDB_API_URL = 'https://sheetdb.io/api/v1/2v34wn1pngq4f';
 
 // Hämta eller skapa spelarlista
@@ -62,7 +61,7 @@ function renderPlayerList() {
   
   if (!isOnline) {
     const offlineWarning = document.createElement("div");
-    offlineWarning.innerHTML = '<p style="color: orange;">⚠️ Offline läge - data sparas lokalt</p>';
+    offlineWarning.innerHTML = '<p class="status-message status-offline">⚠️ Offline läge - data sparas lokalt</p>';
     list.appendChild(offlineWarning);
   }
   
@@ -87,7 +86,6 @@ async function addPlayer() {
     if (isOnline) {
       // Lägg till spelare i SheetDB (kommer att sparas automatiskt när de spelar)
       // Men uppdatera listan direkt
-      // Inget behov av att skicka till separat players endpoint
     } else {
       // Fallback till localStorage
       localStorage.setItem("players", JSON.stringify(players));
@@ -403,7 +401,7 @@ async function renderLeaderboard() {
   const leaderboardDiv = document.getElementById("leaderboard");
   if (!leaderboardDiv) return;
   
-  leaderboardDiv.innerHTML = '<p>Laddar leaderboard...</p>';
+  leaderboardDiv.innerHTML = '<p class="loading">Laddar leaderboard...</p>';
   
   let scoreboard = {};
   
@@ -465,7 +463,8 @@ async function renderLeaderboard() {
     return;
   }
 
-  let html = `<table>
+  // Desktop table
+  let desktopHtml = `<table>
     <thead>
       <tr>
         <th>Spelare</th>
@@ -475,22 +474,52 @@ async function renderLeaderboard() {
       </tr>
     </thead><tbody>`;
 
+  // Mobile layout
+  let mobileHtml = '<div class="mobile-leaderboard">';
+
   // Sortera efter bästa snittpoäng
   const sortedPlayers = Object.entries(scoreboard)
     .sort(([,a], [,b]) => (a.totalScore / a.roundsPlayed) - (b.totalScore / b.roundsPlayed));
 
-  sortedPlayers.forEach(([player, data]) => {
+  sortedPlayers.forEach(([player, data], index) => {
     const avgScore = (data.totalScore / data.roundsPlayed).toFixed(1);
-    html += `<tr>
+    
+    // Desktop table row
+    desktopHtml += `<tr>
       <td>${player}</td>
       <td>${data.roundsPlayed}</td>
       <td>${avgScore}</td>
       <td>${data.bestScore}</td>
     </tr>`;
+    
+    // Mobile card
+    mobileHtml += `
+      <div class="mobile-player-card">
+        <div class="mobile-player-header">
+          <span>${player}</span>
+          <div class="mobile-player-rank">${index + 1}</div>
+        </div>
+        <div class="mobile-stats-grid">
+          <div class="mobile-stat-item">
+            <div class="mobile-stat-label">Rundor</div>
+            <div class="mobile-stat-value rounds">${data.roundsPlayed}</div>
+          </div>
+          <div class="mobile-stat-item">
+            <div class="mobile-stat-label">Snittscore</div>
+            <div class="mobile-stat-value avg-score">${avgScore}</div>
+          </div>
+          <div class="mobile-stat-item">
+            <div class="mobile-stat-label">Bästa runda</div>
+            <div class="mobile-stat-value best-score">${data.bestScore}</div>
+          </div>
+        </div>
+      </div>`;
   });
 
-  html += `</tbody></table>`;
-  leaderboardDiv.innerHTML += html;
+  desktopHtml += `</tbody></table>`;
+  mobileHtml += `</div>`;
+
+  leaderboardDiv.innerHTML += desktopHtml + mobileHtml;
 }
 
 // Initialisera leaderboard
