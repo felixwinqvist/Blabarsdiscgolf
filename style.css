@@ -25,7 +25,7 @@ body {
   width: 160px;
   height: auto;
   opacity: 0;
-  animation: slideInLeft 0.8s ease-out 0.2s forwards; /* Logo slide-in */
+  animation: slideInUp 0.8s ease-out 0.2s forwards; /* Logo slide-in */
 }
 
 h1 {
@@ -515,9 +515,9 @@ input[type="number"]:hover {
   }
   
   .container img {
-    width: 120px;
-    top: 0.5rem;
-    left: 0.5rem;
+    width: 110px;
+    top: 0.25rem;
+    left: 0.25rem;
   }
   
   h1 {
