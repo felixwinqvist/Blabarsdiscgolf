@@ -18,6 +18,10 @@ body {
   padding-bottom: 1rem;
 }
 
+.flytta-hoger {
+  margin-left: 4rem;
+}
+
 .container img {
   position: absolute;
   top: 1rem;
@@ -31,7 +35,6 @@ body {
 h1 {
   margin-top: 1rem;
   margin-bottom: 2rem;
-  margin-left: 4rem;
   font-size: 3rem;
   color: #344659;
   opacity: 0;
