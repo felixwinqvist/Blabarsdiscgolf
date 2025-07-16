@@ -1,3 +1,4 @@
+/* GRUNDLÄGGANDE LAYOUT */
 body {
   font-family: sans-serif;
   background: linear-gradient(to bottom right, #e8f4f8, #ffffff);
@@ -12,6 +13,8 @@ body {
   padding: 1rem;
   text-align: center;
   position: relative;
+  /* Remove min-height and flex properties that cause issues */
+  padding-bottom: 1rem; /* Add bottom padding instead of absolute positioning */
 }
 
 .container img {
@@ -20,6 +23,13 @@ body {
   left: 1rem;
   width: 160px;
   height: auto;
+}
+
+h1 {
+  margin-top: 1rem;
+  margin-bottom: 2rem;
+  font-size: 3rem;
+  color: #2c3e50;
 }
 
 h1 span {
@@ -85,59 +95,47 @@ button {
   cursor: pointer;
 }
 
-.start-btn {
-  margin-top: 2rem;
-  background-color: #28a745;
-  font-size: 1.1rem;
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-  transition: all 0.3s ease;
+/* LEADERBOARD LAYOUT - Fixed for proper scrolling */
+#leaderboard {
+  margin-bottom: 2rem; /* Add margin instead of flex-grow */
+  width: 100%;
 }
 
-.start-btn:hover {
-  background-color: #218838;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
-}
-
-/* DESKTOP/TABLET TABELL STYLING */
+/* DESKTOP TABELL STYLING */
 table {
   width: 100%;
   border-collapse: collapse;
   margin-top: 1rem;
   background-color: white;
-  border-radius: 8px;
+  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
-  font-size: 0.85rem;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  font-size: 0.9rem;
 }
 
 thead {
-  background-color: #f8f9fa;
-  color: #495057;
+  background: linear-gradient(135deg, #28a745, #20c997);
+  color: white;
 }
 
 th {
-  padding: 0.6rem 0.3rem;
+  padding: 1rem 0.5rem;
   font-weight: 600;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
-  font-size: 0.75rem;
-  border: none;
-  position: relative;
-  border-bottom: 2px solid #e9ecef;
+  letter-spacing: 0.5px;
+  font-size: 0.8rem;
   text-align: center;
+  border: none;
 }
 
 th:first-child {
+  text-align: left;
+  padding-left: 1.5rem;
   background-color: #28a745;
   color: white;
   font-size: 0.8rem;
   min-width: 80px;
   max-width: 80px;
-  text-align: left;
-  padding-left: 0.8rem;
 }
 
 th small {
@@ -148,6 +146,7 @@ th small {
 
 tbody tr {
   transition: all 0.3s ease;
+  border-bottom: 1px solid #e9ecef;
 }
 
 tbody tr:nth-child(even) {
@@ -160,25 +159,26 @@ tbody tr:nth-child(odd) {
 
 tbody tr:hover {
   background-color: #e9f7ef;
-  transform: scale(1.01);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 td {
-  padding: 0.8rem 0.3rem;
-  border: none;
-  border-bottom: 1px solid #e9ecef;
+  padding: 1rem 0.5rem;
   text-align: center;
   font-weight: 500;
-  font-size: 0.85rem;
+  font-size: 0.9rem;
+  color: #495057;
+  border: none;
+  border-bottom: 1px solid #e9ecef;
 }
 
 td:first-child {
-  background-color: #f1f8f4;
+  text-align: left;
+  padding-left: 1.5rem;
   font-weight: 600;
   color: #2c3e50;
-  text-align: left;
-  padding-left: 0.8rem;
+  background-color: #f1f8f4;
   border-right: 1px solid #e9ecef;
   min-width: 80px;
   max-width: 80px;
@@ -221,414 +221,86 @@ input[type="number"]:hover {
   min-width: 50px;
 }
 
-/* MOBILANPASSAD DESIGN */
-@media (max-width: 768px) {
-  .container {
-    padding: 0.5rem;
-  }
-  
-  .container img {
-    width: 120px;
-    top: 0.5rem;
-    left: 0.5rem;
-  }
-  
-  h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1rem;
-  }
-  
-  /* Göm traditionell tabell på mobil */
-  table {
-    display: none;
-  }
-  
-  /* Visa mobilanpassad layout istället */
-  .mobile-score-layout {
-    display: block;
-  }
-  
-  .mobile-player-card {
-    background-color: white;
-    border-radius: 12px;
-    margin-bottom: 1rem;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-  }
-  
-  .mobile-player-header {
-    background-color: #28a745;
-    color: white;
-    padding: 1rem;
-    font-weight: bold;
-    font-size: 1.1rem;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-  }
-  
-  .mobile-total-score {
-    font-size: 1.2rem;
-    font-weight: bold;
-    background-color: rgba(255, 255, 255, 0.2);
-    padding: 0.3rem 0.8rem;
-    border-radius: 20px;
-  }
-  
-  .mobile-holes-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.5rem;
-    padding: 1rem;
-  }
-  
-  .mobile-hole-input {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background-color: #f8f9fa;
-    padding: 0.8rem;
-    border-radius: 8px;
-    border: 1px solid #e9ecef;
-  }
-  
-  .mobile-hole-label {
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: #495057;
-    margin-bottom: 0.3rem;
-    text-align: center;
-  }
-  
-  .mobile-hole-par {
-    font-size: 0.65rem;
-    color: #6c757d;
-    margin-bottom: 0.5rem;
-  }
-  
-  .mobile-hole-input input[type="number"] {
-    width: 50px;
-    height: 50px;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-align: center;
-    border: 2px solid #e9ecef;
-    border-radius: 8px;
-    background-color: white;
-    transition: all 0.3s ease;
-  }
-  
-  .mobile-hole-input input[type="number"]:focus {
-    outline: none;
-    border-color: #28a745;
-    box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
-    transform: scale(1.05);
-  }
-  
-  .start-btn {
-    width: 100%;
-    font-size: 1.2rem;
-    padding: 1.2rem;
-    margin-top: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
-  }
-}
-
-/* EXTRA LITEN SKÄRM */
-@media (max-width: 480px) {
-  .container {
-    padding: 0.3rem;
-  }
-  
-  .container img {
-    width: 100px;
-  }
-  
-  h1 {
-    font-size: 1.3rem;
-    margin-top: 1rem;
-  }
-  
-  .mobile-holes-grid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0.3rem;
-    padding: 0.8rem;
-  }
-  
-  .mobile-hole-input {
-    padding: 0.6rem;
-  }
-  
-  .mobile-hole-input input[type="number"] {
-    width: 45px;
-    height: 45px;
-    font-size: 1rem;
-  }
-  
-  .mobile-player-header {
-    padding: 0.8rem;
-    font-size: 1rem;
-  }
-  
-  .mobile-total-score {
-    font-size: 1.1rem;
-    padding: 0.2rem 0.6rem;
-  }
-}
-
-/* DESKTOP VISA BARA VANLIG TABELL */
+/* MOBILANPASSAD SCORE LAYOUT */
 .mobile-score-layout {
   display: none;
 }
 
-@media (max-width: 768px) {
-  .mobile-score-layout {
-    display: block;
-  }
-  
-  table {
-    display: none;
-  }
-}
-
-/* ANIMATIONER */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
-table, .mobile-score-layout {
-  animation: fadeIn 0.6s ease-out;
-}
-
 .mobile-player-card {
-  animation: fadeIn 0.6s ease-out;
-}
-
-/* STATUS MEDDELANDEN */
-.status-message {
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
-  font-weight: 500;
-}
-
-.status-online {
-  background-color: #d4edda;
-  color: #155724;
-  border: 1px solid #c3e6cb;
-}
-
-.status-offline {
-  background-color: #fff3cd;
-  color: #856404;
-  border: 1px solid #ffeaa7;
-}
-
-/* Lägg till dessa regler till din befintliga style.css */
-
-/* KNAPP POSITIONERING */
-.start-btn {
-  display: inline-block;
-  margin-top: 2rem;
-  background-color: #28a745;
-  font-size: 1.1rem;
-  padding: 1rem 2rem;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(40, 167, 69, 0.3);
-  transition: all 0.3s ease;
-  text-decoration: none;
-  color: white;
-  font-weight: bold;
-  text-align: center;
-  /* Säkerställ att knappen alltid är under innehållet */
-  clear: both;
-}
-
-.start-btn:hover {
-  background-color: #218838;
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(40, 167, 69, 0.4);
-}
-
-/* LEADERBOARD SPECIFIKA REGLER */
-#leaderboard {
-  margin-bottom: 1rem; /* Lägger till utrymme efter tabellen */
-}
-
-/* Se till att container har rätt layout för knappen */
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  text-align: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-/* Flex-grow för att pusha knappen nedåt */
-#leaderboard {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-/* MOBILANPASSNING FÖR KNAPP */
-@media (max-width: 768px) {
-  .start-btn {
-    width: calc(100% - 2rem);
-    font-size: 1.2rem;
-    padding: 1.2rem;
-    margin-top: 2rem;
-    border-radius: 12px;
-    box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
-  }
-  
-  #leaderboard {
-    margin-bottom: 1.5rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .start-btn {
-    width: calc(100% - 1rem);
-    margin-top: 1.5rem;
-    padding: 1rem;
-    font-size: 1.1rem;
-  }
-}
-
-
-.container {
-  position: relative;
-  padding-bottom: 100px; /* Ge utrymme för knappen */
-}
-
-.start-btn {
-  position: absolute;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 0;
-}
-/* MOBILKOMPATIBEL SCOREBOARD CSS - Lägg till eller ersätt i din style.css */
-
-/* GRUNDLÄGGANDE LAYOUT */
-body {
-  font-family: sans-serif;
-  background: linear-gradient(to bottom right, #e8f4f8, #ffffff);
-  margin: 0;
-  padding: 0;
-  color: #222;
-}
-
-.container {
-  max-width: 100%;
-  margin: 0 auto;
-  padding: 1rem;
-  text-align: center;
-  position: relative;
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-}
-
-.container img {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  width: 160px;
-  height: auto;
-}
-
-h1 {
-  margin-top: 1rem;
-  margin-bottom: 2rem;
-  font-size: 3rem;
-  color: #2c3e50;
-}
-
-h1 span {
-  color: #0077cc;
-}
-
-/* LEADERBOARD LAYOUT */
-#leaderboard {
-  flex-grow: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  margin-bottom: 2rem;
-}
-
-/* DESKTOP TABELL STYLING */
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
   background-color: white;
   border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-  font-size: 0.9rem;
-}
-
-thead {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-}
-
-th {
-  padding: 1rem 0.5rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-  font-size: 0.8rem;
-  text-align: center;
-  border: none;
-}
-
-th:first-child {
-  text-align: left;
-  padding-left: 1.5rem;
-}
-
-tbody tr {
-  transition: all 0.3s ease;
-  border-bottom: 1px solid #e9ecef;
-}
-
-tbody tr:nth-child(even) {
-  background-color: #f8f9fa;
-}
-
-tbody tr:nth-child(odd) {
-  background-color: white;
-}
-
-tbody tr:hover {
-  background-color: #e9f7ef;
-  transform: translateY(-2px);
+  margin-bottom: 1rem;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
 }
 
-td {
-  padding: 1rem 0.5rem;
-  text-align: center;
-  font-weight: 500;
-  font-size: 0.9rem;
-  color: #495057;
+.mobile-player-header {
+  background-color: #28a745;
+  color: white;
+  padding: 1rem;
+  font-weight: bold;
+  font-size: 1.1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-td:first-child {
-  text-align: left;
-  padding-left: 1.5rem;
+.mobile-total-score {
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+}
+
+.mobile-holes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+  padding: 1rem;
+}
+
+.mobile-hole-input {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #f8f9fa;
+  padding: 0.8rem;
+  border-radius: 8px;
+  border: 1px solid #e9ecef;
+}
+
+.mobile-hole-label {
+  font-size: 0.75rem;
   font-weight: 600;
-  color: #2c3e50;
+  color: #495057;
+  margin-bottom: 0.3rem;
+  text-align: center;
+}
+
+.mobile-hole-par {
+  font-size: 0.65rem;
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.mobile-hole-input input[type="number"] {
+  width: 50px;
+  height: 50px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-align: center;
+  border: 2px solid #e9ecef;
+  border-radius: 8px;
+  background-color: white;
+  transition: all 0.3s ease;
+}
+
+.mobile-hole-input input[type="number"]:focus {
+  outline: none;
+  border-color: #28a745;
+  box-shadow: 0 0 0 3px rgba(40, 167, 69, 0.2);
+  transform: scale(1.05);
 }
 
 /* MOBILANPASSAD LEADERBOARD */
@@ -648,17 +320,6 @@ td:first-child {
 .mobile-player-card:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
-}
-
-.mobile-player-header {
-  background: linear-gradient(135deg, #28a745, #20c997);
-  color: white;
-  padding: 1rem 1.5rem;
-  font-weight: bold;
-  font-size: 1.1rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .mobile-player-rank {
@@ -739,7 +400,7 @@ td:first-child {
   border: 1px solid #ffeaa7;
 }
 
-/* KNAPP STYLING */
+/* KNAPP STYLING - Fixed positioning */
 .start-btn {
   display: inline-block;
   margin-top: 2rem;
@@ -753,12 +414,14 @@ td:first-child {
   color: white;
   font-weight: bold;
   text-align: center;
+  /* Remove absolute positioning */
+  position: relative;
   clear: both;
+  margin-bottom: 2rem; /* Add bottom margin for spacing */
 }
 
 .start-btn:hover {
   background: linear-gradient(135deg, #218838, #1abc9c);
-  transform: translateY(-2px);
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
 }
 
@@ -766,6 +429,7 @@ td:first-child {
 @media (max-width: 768px) {
   .container {
     padding: 0.5rem;
+    /* Remove padding-bottom override */
   }
   
   .container img {
@@ -786,6 +450,10 @@ td:first-child {
   }
   
   /* Visa mobil layout */
+  .mobile-score-layout {
+    display: block;
+  }
+  
   .mobile-leaderboard {
     display: block;
   }
@@ -817,16 +485,34 @@ td:first-child {
   }
   
   .start-btn {
-    width: calc(100% - 2rem);
+    width: calc(100% - 1rem);
     font-size: 1.2rem;
     padding: 1.2rem;
     margin-top: 2rem;
+    margin-bottom: 2rem;
     border-radius: 12px;
     box-shadow: 0 6px 20px rgba(40, 167, 69, 0.3);
   }
   
   #leaderboard {
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem; /* Reduce margin on mobile */
+  }
+  
+  /* Ensure proper spacing for mobile score layout */
+  .mobile-holes-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+    padding: 0.8rem;
+  }
+  
+  .mobile-hole-input {
+    padding: 0.6rem;
+  }
+  
+  .mobile-hole-input input[type="number"] {
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
   }
 }
 
@@ -863,10 +549,27 @@ td:first-child {
   }
   
   .start-btn {
-    width: calc(100% - 1rem);
+    width: calc(100% - 0.6rem);
     margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
     padding: 1rem;
     font-size: 1.1rem;
+  }
+  
+  .mobile-holes-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.3rem;
+    padding: 0.8rem;
+  }
+  
+  .mobile-hole-input {
+    padding: 0.6rem;
+  }
+  
+  .mobile-hole-input input[type="number"] {
+    width: 45px;
+    height: 45px;
+    font-size: 1rem;
   }
 }
 
@@ -883,7 +586,8 @@ td:first-child {
 }
 
 table,
-.mobile-leaderboard {
+.mobile-leaderboard,
+.mobile-score-layout {
   animation: fadeInUp 0.6s ease-out;
 }
 
