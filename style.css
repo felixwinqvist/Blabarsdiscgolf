@@ -5,6 +5,8 @@ body {
   margin: 0;
   padding: 0;
   color: #222;
+  opacity: 0; /* Start with body hidden for fade-in */
+  animation: fadeIn 1s ease-out forwards; /* Page load animation */
 }
 
 .container {
@@ -13,8 +15,7 @@ body {
   padding: 1rem;
   text-align: center;
   position: relative;
-  /* Remove min-height and flex properties that cause issues */
-  padding-bottom: 1rem; /* Add bottom padding instead of absolute positioning */
+  padding-bottom: 1rem;
 }
 
 .container img {
@@ -23,6 +24,8 @@ body {
   left: 1rem;
   width: 160px;
   height: auto;
+  opacity: 0;
+  animation: slideInLeft 0.8s ease-out 0.2s forwards; /* Logo slide-in */
 }
 
 h1 {
@@ -30,6 +33,8 @@ h1 {
   margin-bottom: 2rem;
   font-size: 3rem;
   color: #2c3e50;
+  opacity: 0;
+  animation: fadeInUp 0.8s ease-out 0.4s forwards; /* Header fade-in */
 }
 
 h1 span {
@@ -52,16 +57,33 @@ h1 span {
   color: inherit;
   background-color: #f5f5f5;
   box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-  transition: transform 0.2s;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background-color 0.3s ease;
 }
 
 .card:hover {
-  transform: scale(1.02);
+  transform: translateY(-5px) scale(1.02); /* Enhanced hover effect */
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  background-color: #ffffff;
 }
+
+.animate-card {
+  opacity: 0;
+  transform: translateY(30px);
+  animation: slideInUp 0.6s ease-out forwards;
+}
+
+.animate-card:nth-child(1) { animation-delay: 0.6s; }
+.animate-card:nth-child(2) { animation-delay: 0.8s; }
+.animate-card:nth-child(3) { animation-delay: 1.0s; }
 
 .icon {
   font-size: 2rem;
   margin-right: 1rem;
+  transition: transform 0.3s ease; /* Icon hover animation */
+}
+
+.card:hover .icon {
+  transform: scale(1.2); /* Icon scales on card hover */
 }
 
 .green { border-left: 6px solid #007bff; }
@@ -75,6 +97,67 @@ h1 span {
   margin-top: 2rem;
   text-align: left;
   border-radius: 10px;
+}
+
+/* SYMMETRICAL CHECKBOX LAYOUT */
+#player-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.8rem;
+  margin: 2rem 0;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+#player-list > div {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 0.8rem 1rem;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+#player-list > div:hover {
+  border-color: #007bff;
+  background-color: #f8f9ff;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 123, 255, 0.15);
+}
+
+#player-list label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 1rem;
+  font-weight: 500;
+  color: #2c3e50;
+  margin: 0;
+}
+
+#player-list input[type="checkbox"] {
+  width: 20px;
+  height: 20px;
+  margin-right: 0.8rem;
+  cursor: pointer;
+  accent-color: #007bff;
+  border-radius: 4px;
+}
+
+#player-list input[type="checkbox"]:checked + span {
+  color: #007bff;
+  font-weight: 600;
+}
+
+/* Style for the status messages in player list */
+#player-list .status-message {
+  grid-column: 1 / -1;
+  margin-bottom: 0.5rem;
 }
 
 input[type="text"] {
@@ -97,7 +180,7 @@ button {
 
 /* LEADERBOARD LAYOUT - Fixed for proper scrolling */
 #leaderboard {
-  margin-bottom: 2rem; /* Add margin instead of flex-grow */
+  margin-bottom: 2rem;
   width: 100%;
 }
 
@@ -414,22 +497,21 @@ input[type="number"]:hover {
   color: white;
   font-weight: bold;
   text-align: center;
-  /* Remove absolute positioning */
   position: relative;
   clear: both;
-  margin-bottom: 2rem; /* Add bottom margin for spacing */
+  margin-bottom: 2rem;
 }
 
 .start-btn:hover {
   background: linear-gradient(135deg, #218838, #1abc9c);
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+  transform: translateY(-3px); /* Subtle lift on hover */
 }
 
 /* MOBILANPASSNING */
 @media (max-width: 768px) {
   .container {
     padding: 0.5rem;
-    /* Remove padding-bottom override */
   }
   
   .container img {
@@ -442,6 +524,27 @@ input[type="number"]:hover {
     font-size: 1.6rem;
     margin-top: 1.5rem;
     margin-bottom: 1.5rem;
+  }
+  
+  /* Mobile checkbox layout */
+  #player-list {
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 0.6rem;
+    margin: 1.5rem 0;
+  }
+  
+  #player-list > div {
+    padding: 0.6rem 0.8rem;
+  }
+  
+  #player-list label {
+    font-size: 0.9rem;
+  }
+  
+  #player-list input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 0.6rem;
   }
   
   /* Göm desktop tabell */
@@ -495,10 +598,9 @@ input[type="number"]:hover {
   }
   
   #leaderboard {
-    margin-bottom: 1rem; /* Reduce margin on mobile */
+    margin-bottom: 1rem;
   }
   
-  /* Ensure proper spacing for mobile score layout */
   .mobile-holes-grid {
     grid-template-columns: repeat(3, 1fr);
     gap: 0.3rem;
@@ -529,6 +631,26 @@ input[type="number"]:hover {
   h1 {
     font-size: 1.4rem;
     margin-top: 1.2rem;
+  }
+  
+  #player-list {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.5rem;
+    margin: 1rem 0;
+  }
+  
+  #player-list > div {
+    padding: 0.5rem 0.6rem;
+  }
+  
+  #player-list label {
+    font-size: 0.85rem;
+  }
+  
+  #player-list input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    margin-right: 0.5rem;
   }
   
   .mobile-player-header {
@@ -574,7 +696,38 @@ input[type="number"]:hover {
 }
 
 /* ANIMATIONER */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 @keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInUp {
   from {
     opacity: 0;
     transform: translateY(30px);
