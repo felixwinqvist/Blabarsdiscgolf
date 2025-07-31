@@ -79,6 +79,7 @@ h1 span {
 .animate-card:nth-child(1) { animation-delay: 0.6s; }
 .animate-card:nth-child(2) { animation-delay: 0.8s; }
 .animate-card:nth-child(3) { animation-delay: 1.0s; }
+.animate-card:nth-child(4) { animation-delay: 1.2s; }
 
 .icon {
   font-size: 2rem;
@@ -92,6 +93,7 @@ h1 span {
 
 .green { border-left: 6px solid #007bff; }
 .gold  { border-left: 6px solid #ffcc00; }
+.purple { border-left: 6px solid #9c27b0; } /* New tournament card color */
 .blue  { border-left: 6px solid #28a745; }
 
 .course-info {
@@ -510,6 +512,100 @@ input[type="number"]:hover {
   background: linear-gradient(135deg, #218838, #1abc9c);
   box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
   transform: translateY(-3px); /* Subtle lift on hover */
+}
+
+/* TOURNAMENT INFO STYLING */
+.tournament-info {
+  background-color: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  margin: 9rem 0;
+  text-align: left;
+  animation: fadeInUp 0.6s ease-out;
+  color : #2e2c2c;
+  ;
+
+}
+
+.tournament-info h2 {
+  color: #9c27b0;
+  margin-bottom: 1rem;
+}
+
+.tournament-info ul {
+  margin: 1rem 0;
+  color : #2e2c2c;
+  padding-left: 2rem;
+}
+
+.tournament-history {
+  margin-top: 3rem;
+}
+
+.year-section {
+  background-color: white;
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  animation: fadeInUp 0.6s ease-out;
+}
+
+.year-section h3 {
+  color: #9c27b0;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.tournament-categories {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+.category {
+  padding: 1.5rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #9c27b0;
+}
+
+.category h4 {
+  color: #2c3e50;
+  margin-bottom: 1rem;
+}
+
+.winner {
+  font-weight: bold;
+  color: #28a745;
+  margin-bottom: 0.5rem;
+}
+
+.runner-up {
+  color: #6c757d;
+  margin-bottom: 0.5rem;
+}
+
+.top-five {
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+@media (max-width: 768px) {
+  .tournament-categories {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+  
+  .year-section {
+    padding: 1rem;
+  }
+  
+  .category {
+    padding: 1rem;
+  }
 }
 
 /* MOBILANPASSNING */
