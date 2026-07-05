@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Statistik</title>
+  <link rel="stylesheet" href="style.css?v=stats-1">
+</head>
+<body>
+  <div class="container stats-page">
+    <a href="index.html" class="game-back-button" aria-label="Tillbaka till start">‹</a>
+
+    <header class="stats-header">
+      <h1>Statistik</h1>
+      <div class="stats-controls">
+        <label for="stats-player-select">Spelare</label>
+        <select id="stats-player-select">
+          <option value="">Laddar spelare...</option>
+        </select>
+      </div>
+    </header>
+
+    <main id="player-stats" class="stats-content">
+      <p class="loading">Laddar statistik</p>
+    </main>
+  </div>
+
+  <script src="supabase-config.js"></script>
+  <script src="script.js?v=stats-2"></script>
+</body>
+</html>

@@ -3,35 +3,46 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Start New Game</title>
-  <link rel="stylesheet" href="style.css">
+  <title>Starta ny runda</title>
+  <link rel="stylesheet" href="style.css?v=game-clean-2">
 </head>
 <body>
-  <div class="container">
-    <h1>Starta Ny Runda⛳</h1>
-    <p>Skriv in spelarna</p>
+  <div class="container game-page">
+    <a href="index.html" class="game-back-button" aria-label="Tillbaka till start">‹</a>
 
-    <div id="player-list">
-      <!-- Dynamiskt lista på spelare -->
-    </div>
+    <header class="game-hero">
+      <h1>Starta ny runda</h1>
+      <div class="game-summary">
+        <span>9 hål</span>
+        <span>Par 31</span>
+        <span>Supabase</span>
+      </div>
+    </header>
 
-    <div style="margin-top: 1rem;">
-      <input type="text" id="new-player" placeholder="Add new player" />
-      <button onclick="addPlayer()">Add</button>
-    </div>
+    <main class="game-panel game-panel-simple">
+      <section class="player-section" aria-labelledby="players-heading">
+        <div class="section-heading">
+          <div>
+            <h2 id="players-heading">Välj spelare</h2>
+          </div>
+        </div>
 
-    <div class="course-info">
-      <h3>Information om banan</h3>
-      
-        <li> ⛳ 9 hål totalt</li>
-        <li> 🥏 Par: 3, 4, 3, 3, 3, 3, 4, 4, 4</li>
-        <li> 🌟 Totalt par: 31</li>
-      
-    </div>
+        <div id="player-list">
+          <!-- Dynamiskt lista på spelare -->
+        </div>
 
-    <button class="start-btn" onclick="startGame()">▶ Start Game</button>
+        <div class="add-player-row">
+          <input type="text" id="new-player" placeholder="Nytt spelarnamn" />
+          <button type="button" onclick="addPlayer()">Lägg till</button>
+        </div>
+      </section>
+
+    </main>
+
+    <button class="start-btn game-start-btn" onclick="startGame()">Starta runda</button>
   </div>
 
-  <script src="script.js"></script>
+  <script src="supabase-config.js"></script>
+  <script src="script.js?v=game-clean-2"></script>
 </body>
 </html>
