@@ -98,7 +98,7 @@ function renderPlayerList() {
   
   if (!isOnline) {
     const offlineWarning = document.createElement("div");
-    offlineWarning.innerHTML = '<p class="status-message status-offline">⚠️ Offline läge - data sparas lokalt</p>';
+    offlineWarning.innerHTML = '<p class="status-message status-offline">Offline läge - data sparas lokalt</p>';
     list.appendChild(offlineWarning);
   }
   
@@ -203,9 +203,9 @@ function renderScoreForm() {
   
   // Visa online/offline status
   if (!onlineStatus) {
-    html += '<div class="status-message status-offline">⚠️ Offline läge - data sparas lokalt</div>';
+    html += '<div class="status-message status-offline">Offline läge - data sparas lokalt</div>';
   } else {
-    html += '<div class="status-message status-online">🌐 Online - data sparas till Supabase</div>';
+    html += '<div class="status-message status-online">Online - data sparas till Supabase</div>';
   }
   
   // Desktop tabell (dold på mobil)
@@ -407,7 +407,7 @@ if (scoreForm) {
         rounds.push(newRound);
         localStorage.setItem("rounds", JSON.stringify(rounds));
         success = true;
-        alert("Offline: Rundan sparad lokalt! ⚠️");
+        alert("Offline: Rundan sparad lokalt.");
       }
     } else {
       // Spara till localStorage
@@ -429,7 +429,7 @@ if (scoreForm) {
       rounds.push(newRound);
       localStorage.setItem("rounds", JSON.stringify(rounds));
       success = true;
-      alert("Offline: Rundan sparad lokalt! ⚠️");
+      alert("Offline: Rundan sparad lokalt.");
     }
     
     submitButton.textContent = originalText;
@@ -475,7 +475,7 @@ async function renderLeaderboard() {
       }
     });
     
-    leaderboardDiv.innerHTML = '<div class="status-message status-online">🌐 Data från Supabase</div>';
+    leaderboardDiv.innerHTML = '<div class="status-message status-online">Data från Supabase</div>';
   } else {
     // Fallback till localStorage
     const rounds = JSON.parse(localStorage.getItem("rounds") || "[]");
@@ -499,7 +499,7 @@ async function renderLeaderboard() {
     });
     
     if (Object.keys(scoreboard).length > 0) {
-      leaderboardDiv.innerHTML = '<div class="status-message status-offline">⚠️ Offline data (lokal lagring)</div>';
+      leaderboardDiv.innerHTML = '<div class="status-message status-offline">Offline data (lokal lagring)</div>';
     }
   }
 
