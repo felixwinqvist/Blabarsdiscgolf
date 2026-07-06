@@ -10,6 +10,62 @@ let isOnline = true;
 // Par för varje hål (1-9)
 const holePars = [3, 4, 3, 3, 3, 3, 4, 4, 4];
 
+function ensureToastStack() {
+  let stack = document.querySelector('.toast-stack');
+  if (stack) return stack;
+
+  stack = document.createElement('div');
+  stack.className = 'toast-stack';
+  stack.setAttribute('aria-live', 'polite');
+  document.body.appendChild(stack);
+  return stack;
+}
+
+function showToast(message, type = 'success', duration = 3200) {
+  const stack = ensureToastStack();
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`;
+  toast.textContent = message;
+  stack.appendChild(toast);
+
+  setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(8px)';
+    setTimeout(() => toast.remove(), 180);
+  }, duration);
+}
+
+function queueFlash(message, type = 'success') {
+  localStorage.setItem('flashMessage', JSON.stringify({ message, type }));
+}
+
+function showStoredFlash() {
+  const raw = localStorage.getItem('flashMessage');
+  if (!raw) return;
+
+  localStorage.removeItem('flashMessage');
+  try {
+    const flash = JSON.parse(raw);
+    showToast(flash.message, flash.type || 'success');
+  } catch {
+    showToast(raw);
+  }
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;');
+}
+
+function getInputByName(name) {
+  const escapedName = window.CSS?.escape ? CSS.escape(name) : name.replaceAll('"', '\\"');
+  return document.querySelector(`[name="${escapedName}"]`);
+}
+
 function normalizeSupabaseUrl(url) {
   const trimmedUrl = url.trim().replace(/\/$/, '');
 
@@ -98,24 +154,32 @@ function renderPlayerList() {
   
   if (!isOnline) {
     const offlineWarning = document.createElement("div");
-    offlineWarning.innerHTML = '<p class="status-message status-offline">Offline läge - data sparas lokalt</p>';
+    const message = document.createElement("p");
+    message.className = "status-message status-offline";
+    message.textContent = "Offline läge - data sparas lokalt";
+    offlineWarning.appendChild(message);
     list.appendChild(offlineWarning);
   }
   
   players.forEach((player, index) => {
     const div = document.createElement("div");
-    div.innerHTML = `
-      <label>
-        <input type="checkbox" name="player" value="${player}"/>
-        <span>${player}</span>
-      </label>
-    `;
-    const checkbox = div.querySelector("input");
+    const label = document.createElement("label");
+    const checkbox = document.createElement("input");
+    const name = document.createElement("span");
+
+    checkbox.type = "checkbox";
+    checkbox.name = "player";
+    checkbox.value = player;
+    name.textContent = player;
+
+    label.append(checkbox, name);
+    div.appendChild(label);
+
     const syncSelectedState = () => {
       div.classList.toggle("selected", checkbox.checked);
     };
     checkbox.addEventListener("change", syncSelectedState);
-    div.querySelector("label").addEventListener("click", () => {
+    label.addEventListener("click", () => {
       setTimeout(syncSelectedState, 0);
     });
     list.appendChild(div);
@@ -124,6 +188,7 @@ function renderPlayerList() {
 
 async function addPlayer() {
   const input = document.getElementById("new-player");
+  if (!input) return;
   const name = input.value.trim();
   if (name && !players.includes(name)) {
     players.push(name);
@@ -138,6 +203,11 @@ async function addPlayer() {
     
     renderPlayerList();
     input.value = '';
+    showToast(`${name} lades till.`, 'success');
+  } else if (!name) {
+    showToast("Skriv ett namn först.", "warning");
+  } else {
+    showToast(`${name} finns redan i listan.`, "warning");
   }
 }
 
@@ -146,7 +216,7 @@ function startGame() {
     .map(input => input.value);
 
   if (selected.length === 0) {
-    alert("Välj minst en spelare!");
+    showToast("Välj minst en spelare.", "warning");
     return;
   }
 
@@ -154,6 +224,21 @@ function startGame() {
   localStorage.setItem("currentPlayers", JSON.stringify(selected));
   localStorage.setItem("isOnline", isOnline.toString());
   location.href = "score.html";
+}
+
+function initGameControls() {
+  const addButton = document.getElementById("add-player-button");
+  const startButton = document.getElementById("start-game-button");
+  const input = document.getElementById("new-player");
+
+  addButton?.addEventListener("click", addPlayer);
+  startButton?.addEventListener("click", startGame);
+  input?.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
+      addPlayer();
+    }
+  });
 }
 
 // Initialisera när sidan laddas
@@ -164,6 +249,11 @@ window.addEventListener('load', async () => {
   }
 });
 
+document.addEventListener('DOMContentLoaded', () => {
+  initGameControls();
+  showStoredFlash();
+});
+
 // Funktion för att färga poäng baserat på par
 function colorScoreByPar(input, holeIndex) {
   const score = parseInt(input.value);
@@ -172,18 +262,26 @@ function colorScoreByPar(input, holeIndex) {
   if (isNaN(score) || score === 0) {
     input.style.color = '#495057';
     input.style.backgroundColor = 'white';
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
     return;
   }
   
   if (score < par) {
-    input.style.color = '#28a745';
-    input.style.backgroundColor = '#d4edda';
+    input.style.color = '#0b7a3e';
+    input.style.backgroundColor = '#dff8e7';
+    input.style.borderColor = '#22c55e';
+    input.style.boxShadow = '0 0 0 3px rgba(34, 197, 94, 0.16)';
   } else if (score === par) {
-    input.style.color = '#007bff';
-    input.style.backgroundColor = '#cce7ff';
+    input.style.color = '#0d6f7a';
+    input.style.backgroundColor = '#e8f9fb';
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
   } else {
-    input.style.color = '#dc3545';
-    input.style.backgroundColor = '#f8d7da';
+    input.style.color = '#b43c4a';
+    input.style.backgroundColor = '#fdecef';
+    input.style.borderColor = '';
+    input.style.boxShadow = '';
   }
 }
 
@@ -217,11 +315,12 @@ function renderScoreForm() {
   html += "<th>Totalt</th></tr></thead><tbody>";
 
   players.forEach(player => {
-    html += `<tr><td>${player}</td>`;
+    const playerLabel = escapeHtml(player);
+    html += `<tr><td>${playerLabel}</td>`;
     for (let i = 0; i < holeCount; i++) {
-      html += `<td><input type="number" name="${player}-hole${i}" min="1" required /></td>`;
+      html += `<td><input type="number" name="${playerLabel}-hole${i}" min="1" required /></td>`;
     }
-    html += `<td class="total-score" id="total-${player}">0</td></tr>`;
+    html += `<td class="total-score" id="total-${playerLabel}">0</td></tr>`;
   });
 
   html += "</tbody></table>";
@@ -230,20 +329,21 @@ function renderScoreForm() {
   html += '<div class="mobile-score-layout">';
   
   players.forEach(player => {
+    const playerLabel = escapeHtml(player);
     html += `
       <div class="mobile-player-card">
         <div class="mobile-player-header">
-          <span>${player}</span>
-          <div class="mobile-total-score" id="mobile-total-${player}">0</div>
+          <span>${playerLabel}</span>
+          <div class="mobile-total-score" id="mobile-total-${playerLabel}">0</div>
         </div>
         <div class="mobile-holes-grid">`;
     
     for (let i = 0; i < holeCount; i++) {
       html += `
-        <div class="mobile-hole-input">
+          <div class="mobile-hole-input">
           <div class="mobile-hole-label">Hål ${i + 1}</div>
           <div class="mobile-hole-par">Par ${holePars[i]}</div>
-          <input type="number" name="${player}-hole${i}-mobile" min="1" required />
+          <input type="number" name="${playerLabel}-hole${i}-mobile" min="1" required />
         </div>`;
     }
     
@@ -279,8 +379,8 @@ function renderScoreForm() {
       // Synka värden mellan desktop och mobil inputs
       const isMobile = this.name.includes('-mobile');
       const otherInput = isMobile 
-        ? scoreTable.querySelector(`[name='${playerName}-hole${holeIndex}']`)
-        : scoreTable.querySelector(`[name='${playerName}-hole${holeIndex}-mobile']`);
+        ? getInputByName(`${playerName}-hole${holeIndex}`)
+        : getInputByName(`${playerName}-hole${holeIndex}-mobile`);
       
       if (otherInput) {
         otherInput.value = this.value;
@@ -295,7 +395,7 @@ function renderScoreForm() {
 function updateTotalScore(player) {
   let total = 0;
   for (let i = 0; i < 9; i++) {
-    const input = document.querySelector(`[name='${player}-hole${i}']`);
+    const input = getInputByName(`${player}-hole${i}`);
     const score = parseInt(input.value) || 0;
     total += score;
   }
@@ -315,11 +415,11 @@ function updateTotalScore(player) {
   if (total > 0) {
     let color, fontWeight = 'bold';
     if (total < totalPar) {
-      color = '#28a745';
+      color = '#0f7f92';
     } else if (total === totalPar) {
-      color = '#007bff';
+      color = '#0d6f7a';
     } else {
-      color = '#dc3545';
+      color = '#b43c4a';
     }
     
     if (totalElement) {
@@ -361,7 +461,7 @@ if (scoreForm) {
         
         for (let i = 0; i < 9; i++) {
           const inputName = `${player}-hole${i}`;
-          const score = parseInt(document.querySelector(`[name='${inputName}']`).value);
+          const score = parseInt(getInputByName(inputName).value);
           scores.push(score);
           totalScore += score;
         }
@@ -386,7 +486,7 @@ if (scoreForm) {
       
       if (result.success) {
         success = true;
-        alert("Rundan sparad till Supabase! 🎉");
+        queueFlash("Rundan sparades till Supabase.", "success");
       } else {
         // Fallback till localStorage
         const rounds = JSON.parse(localStorage.getItem("rounds") || "[]");
@@ -399,7 +499,7 @@ if (scoreForm) {
           newRound.scores[player] = [];
           for (let i = 0; i < 9; i++) {
             const inputName = `${player}-hole${i}`;
-            const val = parseInt(document.querySelector(`[name='${inputName}']`).value);
+            const val = parseInt(getInputByName(inputName).value);
             newRound.scores[player].push(val);
           }
         });
@@ -407,7 +507,7 @@ if (scoreForm) {
         rounds.push(newRound);
         localStorage.setItem("rounds", JSON.stringify(rounds));
         success = true;
-        alert("Offline: Rundan sparad lokalt.");
+        queueFlash("Offline: rundan sparades lokalt.", "warning");
       }
     } else {
       // Spara till localStorage
@@ -421,7 +521,7 @@ if (scoreForm) {
         newRound.scores[player] = [];
         for (let i = 0; i < 9; i++) {
           const inputName = `${player}-hole${i}`;
-          const val = parseInt(document.querySelector(`[name='${inputName}']`).value);
+          const val = parseInt(getInputByName(inputName).value);
           newRound.scores[player].push(val);
         }
       });
@@ -429,7 +529,7 @@ if (scoreForm) {
       rounds.push(newRound);
       localStorage.setItem("rounds", JSON.stringify(rounds));
       success = true;
-      alert("Offline: Rundan sparad lokalt.");
+      queueFlash("Offline: rundan sparades lokalt.", "warning");
     }
     
     submitButton.textContent = originalText;
@@ -528,10 +628,11 @@ async function renderLeaderboard() {
 
   sortedPlayers.forEach(([player, data], index) => {
     const avgScore = (data.totalScore / data.roundsPlayed).toFixed(1);
+    const playerLabel = escapeHtml(player);
     
     // Desktop table row
     desktopHtml += `<tr>
-      <td>${player}</td>
+      <td>${playerLabel}</td>
       <td>${data.roundsPlayed}</td>
       <td>${avgScore}</td>
       <td>${data.bestScore}</td>
@@ -541,7 +642,7 @@ async function renderLeaderboard() {
     mobileHtml += `
       <div class="mobile-player-card">
         <div class="mobile-player-header">
-          <span>${player}</span>
+          <span>${playerLabel}</span>
           <div class="mobile-player-rank">${index + 1}</div>
         </div>
         <div class="mobile-stats-grid">
@@ -583,15 +684,6 @@ function getRoundTotal(row) {
   const savedTotal = parseInt(row.totalt);
   if (!Number.isNaN(savedTotal)) return savedTotal;
   return getRoundScores(row).reduce((sum, score) => sum + score, 0);
-}
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#039;');
 }
 
 function renderLineChart(rounds) {
@@ -653,7 +745,7 @@ function renderHoleChart(rounds) {
         ${holeAverages.map(item => {
           const overPar = item.average - item.par;
           const width = Math.max(8, (item.average / maxAverage) * 100);
-          const tone = overPar <= 0 ? 'good' : overPar < 1 ? 'even' : 'high';
+          const tone = overPar < 0 ? 'good' : overPar < 1 ? 'even' : 'high';
           return `
             <div class="hole-bar-row">
               <div class="hole-label">Hål ${item.hole}</div>
